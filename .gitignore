@@ -1,0 +1,28 @@
+# Development database
+db.sqlite3
+
+# Local settings
+local_settings.py
+sites
+
+# User media
+media
+
+# logfiles
+logs/
+
+# Temp files
+*.*~
+*~
+.*.swp
+
+# Compiled python files
+*.pyc
+
+# Virtualenv directory
+python
+
+
+scripts/nohup.out
+scripts/*.log
+scripts/gunicorn.pid
