@@ -1,0 +1,65 @@
+NationBuilder Blog Importer
+---------------------------
+
+This script scrapes an external blog site, running through all posts and importing
+them into the specified NationBuilder blog.
+
+It supports pagination on the source site, and imports title, date, and content.
+
+Authors, tags, and categories are not supported.
+
+
+Installation
+------------
+
+Python virtual environments are strongly recommended.
+
+In your virutal environment, all you need to do to instal dependencies is
+pip install -r requirements.txt
+
+All configuration settings should be placed in a new local_settings.py file
+(and that file should be excluded from all repositories).
+
+You can use settings.py as a template for your local_settings.py, but don't copy
+over the last code block that imports local_settings
+
+
+Configuration
+-------------
+
+This script relies on CSS selectors on the source site to identify blog posts.
+These selectors must be set up in local_settings.py
+
+An initial index page must be specified; no actual content is pulled from the index page,
+but the script looks for two links:
+
+1) links to full-text versions of a blog post (ie the "read more" link), and
+2) pagination links to the next page on the index
+
+The script will follow all fulltext links to articles; on the fulltext page, it will use
+the specified selectors to parse out the title, body, author, and date of the post
+(note that a selector is defined for author, but that field is not imported into NB yet)
+
+Once it has exhaused all posts on a page, it will follow the selector for the pagination
+"next page" link and continue, until the "next page" selector is not found.
+
+These blog posts are all inserted into the NationBuilder blog specified in the settings file.
+
+
+Running
+--------
+
+Once the project is installed, and settings file created, it's just
+
+python scrape.py
+
+Yes, really, that's all.  Setting DEBUG=True in settings may make the run more interesting.
+
+
+License
+-------
+
+This project is licensed under the terms of the GNU GPL v3, a copy of which is included in LICENSE
+
+Copyright (c) 2017 franciskung.com consulting ltd.
+

@@ -23,9 +23,6 @@ NB_PAGE_TAG = None
 # URL of index page to scrape from
 SCRAPE_URL = None
 
-# Selector to indicate an individual story on the index page
-SCRAPE_ARTICLE = None
-
 # Selector to indicate the "read more" link within a story on the index page
 SCRAPE_LINK = None
 
