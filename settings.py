@@ -37,6 +37,7 @@ SCRAPE_ARTICLE_DATE = None
 
 # A strptime string to parse the incoming article dates
 SCRAPE_DATE_FORMAT = None
+SCRAPE_DATE_LOCALE = None         # ie 'fr_FR' for a French site, optional (defaults to english)
 
 
 # local_settings.py can be used to override environment-specific settings
