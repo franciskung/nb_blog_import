@@ -67,15 +67,22 @@ def do_scrape():
 
       # parse the page
       article_page = lxml.html.fromstring(result2.content)
-      
       article_title = article_page.cssselect(settings.SCRAPE_ARTICLE_TITLE)[0].text_content()
-      article_body = lxml.html.tostring(article_page.cssselect(settings.SCRAPE_ARTICLE_BODY)[0])
+      
+      # bit of clean-up on the body, ensuring the containing div doesn't have any classes
+      # (as often it'll have col-md-6 or somesuch, which messes up the NB version)
+      article_body = article_page.cssselect(settings.SCRAPE_ARTICLE_BODY)[0]
+      article_body.set("class", value="")
+      article_body = lxml.html.tostring(article_body)
+      
       #article_author = article_page.cssselect(settings.SCRAPE_ARTICLE_AUTHOR)[0].text_content()
       article_author = ""
-      article_date = article_page.cssselect(settings.SCRAPE_ARTICLE_DATE)[0].text_content()
 
       # parse the date into a native Python datetime, with some locale-related retrying
       # (ie if a site that's supposed to be in French has some random English articles on it)
+
+      article_date = article_page.cssselect(settings.SCRAPE_ARTICLE_DATE)[0].text_content()
+
       try:
         article_date = datetime.strptime(article_date.strip().encode("iso-8859-1"), settings.SCRAPE_DATE_FORMAT)
       except:
@@ -131,7 +138,12 @@ def nationbuilder_import(article_title, article_body, article_author, article_da
   url = u"{0}?access_token={1}".format(url, settings.NB_KEY)
   
 
-  # set up params  
+  # set up params
+  #  
+  # article name should allow up to 255 characters, but the slow (which is auto-generated) only
+  # allows up to 200, and I've used 175 as the limit because duplicate slugs & unicode characters
+  # make a slug longer than it initially appears -- all of which causes a NB error
+  #
   params = {'blog_post': {'name': article_title[0:175],
                           'status': 'published',
                           'content_before_flip': article_body,
