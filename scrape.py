@@ -173,9 +173,15 @@ def nationbuilder_blogs():
   url = u"{0}?access_token={1}".format(url, settings.NB_KEY)
   result = requests.get(url, headers={'Content-type': 'application/json', 'Accept': 'application/json'})
   
-  for blog in result.json()['results']:
-    print u"{0}: {1}".format(blog['id'], blog['name'])
-  #print result.json()
+  if result.status_code == 200:
+    for blog in result.json()['results']:
+      print u"{0}: {1}".format(blog['id'], blog['name'])
+    #print result.json()
+    
+  else:
+    print "Unable to fetch blog list!"
+    print "HTTP status code: {0}".format(result.status_code)
+    print result.content
 
 
 
